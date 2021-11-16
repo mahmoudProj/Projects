@@ -1,1 +1,2 @@
-
+A Java program which reads a sequence of notes and produces the song that those notes compose. The program also is able to play the songs that it creates.
+Credit to John Boyland for writing part of the code.
