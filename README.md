@@ -1,2 +1,1 @@
-# Projects
-These are a collection of my recent projects that I have coded.
+Thank you for visiting my GitHub! This is a collection of projects that I have created to show examples of work I have done in the past. Each folder will contain a README explaining what the program does. 
