@@ -1,1 +1,1 @@
-
+A program that produces a visual representation of the scheduling disciplines of the Strict-FIFO and Round-Robin algorithms in different situations based on the user’s scenarios. Credit to John Boyland for writing part of the code.
