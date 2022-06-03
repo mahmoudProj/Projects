@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+{% load static %}
+{% if sessionUser.username == "" %}
+    <meta http-equiv="Refresh" content="0; url='/'"/>
+{% endif %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css\home.css' %}"/>
+</head>
+
+<div class="navContainer">
+    <header class="header">
+        <h1><a>TA Scheduler Management System</a></h1>
+    </header>
+    <div class="navigation">
+        {% if sessionUser == "Admin" %}
+        {% endif %}
+        <li><a href="/home/">Home</a></li>
+        <li><a href="/courses/">Courses</a></li>
+        <li><a href="/users/">Users</a></li>
+        <li><a href="/">Logout</a></li>
+    </div>
+</div>
+
+<body>
+<p class="title">{{ sessionUser.username }}'s Home</p>
+<div class="container">
+    <p class=header>My Info</p>
+    <div class="containerbox">
+        <table>
+            <tr>
+                <th>Username</th>
+                <th>Password</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Address</th>
+                <th>Phone</th>
+                <th>Role</th>
+            </tr>
+            <tr>
+                {% if editing == "allowed" %}
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <td><input name="username" placeholder="{{ sessionUser.username }}"></td>
+                        <td><input name="password" placeholder="{{ sessionUser.password }}"></td>
+                        <td><input name="name" placeholder="{{ sessionUser.name }}"></td>
+                        <td><input name="email" placeholder="{{ sessionUser.email }}"></td>
+                        <td><input name="address" placeholder="{{ sessionUser.address }}"></td>
+                        <td><input name="phone" placeholder="{{ sessionUser.phone }}"></td>
+                        <td>{{ sessionUser.role }}</td>
+                        <td>
+                            <button name="saveEditUser" value="{{ sessionUser.username }}">Save</button>
+                    </form>
+                    <td>
+                        <a href="/home/">
+                            <button>Cancel</button>
+                        </a>
+                        {% else %}
+                    <td>{{ sessionUser.username }}</td>
+                    <td>{{ sessionUser.password }}</td>
+                    <td>{{ sessionUser.name }}</td>
+                    <td>{{ sessionUser.email }}</td>
+                    <td>{{ sessionUser.address }}</td>
+                    <td>{{ sessionUser.phone }}</td>
+                    <td>{{ sessionUser.role }}</td>
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <td>
+                            <button name="editUser" value="{{ sessionUser.username }}">Edit</button>
+                        </td>
+                    </form>
+                {% endif %}
+            </tr>
+        </table>
+    </div>
+    <div class="messageSuccess">
+        {{ success }}
+    </div>
+    <div class="messageError">
+        {{ error }}
+    </div>
+</div>
+<div class="container">
+    <p class=header>My Assigned Courses</p>
+    <div class="containerbox">
+        <table>
+            <tr>
+                <th>Course Name</th>
+                <th>Term</th>
+                <th>Year</th>
+            </tr>
+            {% for i in courses %}
+                <tr>
+                    <td class="items">{{ i.name }}</td>
+                    <td class="items">{{ i.term }}</td>
+                    <td class="items">{{ i.year }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+<div class="container">
+    <p class=header>My Assigned Sections</p>
+    <div class="containerbox">
+        <table>
+            <tr>
+                <th>Course</th>
+                <th>Section Type</th>
+                <th>Section Number</th>
+                <th>Assigned User</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Monday</th>
+                <th>Tuesday</th>
+                <th>Wednesday</th>
+                <th>Thursday</th>
+                <th>Friday</th>
+            </tr>
+            {% for i in sections %}
+                <tr>
+                    <td>{{ i.Class }}</td>
+                    <td>{{ i.sectionType }}</td>
+                    <td>{{ i.sectionNumber }}</td>
+                    <td>{{ i.assignedUser }}</td>
+                    <td>{{ i.startTime }}</td>
+                    <td>{{ i.endTime }}</td>
+                    <td>{{ i.monday }}</td>
+                    <td>{{ i.tuesday }}</td>
+                    <td>{{ i.wednesday }}</td>
+                    <td>{{ i.thursday }}</td>
+                    <td>{{ i.friday }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+</body>
+</html>

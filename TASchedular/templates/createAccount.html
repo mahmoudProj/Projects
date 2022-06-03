@@ -1,0 +1,79 @@
+{% load static %}
+{% if sessionUser.username == "" %}
+    <meta http-equiv="Refresh" content="0; url='/'"/>
+{% endif %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Account</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/createAccount.css' %}"/>
+</head>
+
+<div class="navContainer">
+    <header class="header">
+        <h1><a>TA Scheduler Management System</a></h1>
+    </header>
+    <div class="navigation">
+        {% if sessionUser == "Admin" %}
+        {% endif %}
+        <li><a href="/home/">Home</a></li>
+        <li><a href="/courses/">Courses</a></li>
+        <li><a href="/users/">Users</a></li>
+        <li><a href="/">Logout</a></li>
+    </div>
+</div>
+
+<body>
+<form action="" method="post">
+    {% csrf_token %}
+
+    <div class="container">
+        <p class=createUserHeader>Create Account</p>
+
+        <div class="containerbox">
+
+            <table>
+                <tr>
+                    <td><input placeholder="Username" name="username" class='newAccountInformation' required></td>
+                    <td><input placeholder="Password" name="password" class=newAccountInformation required></td>
+                </tr>
+                <tr>
+                    <td><input placeholder="Name" name="name" class=newAccountInformation required></td>
+                    <td><input placeholder="Email" name="email" class=newAccountInformation required></td>
+                </tr>
+                <tr>
+                    <td><input placeholder="Address" name="address" class=newAccountInformation></td>
+                    <td><input placeholder="Phone Number" name="phone" class=newAccountInformation></td>
+                </tr>
+
+
+            </table>
+            <div class="permission">
+                <tr>
+                    <th>Account Permission</th>
+                    <td>
+                        <input type="radio" name="button1" value=0 required>
+                        <label>TA</label>
+                        <input type="radio" name="button1" value=1>
+                        <label>Instructor</label>
+                        <input type="radio" name="button1" value=2>
+                        <label>Admin</label>
+                    </td>
+                </tr>
+            </div>
+            <div class="messageSuccess">
+                {{ success }}
+            </div>
+            <div class="messageError">
+                {{ error }}
+            </div>
+            <div class="submit-button">
+                <button name="createAccountSubmit">Submit</button>
+            </div>
+
+        </div>
+    </div>
+</form>
+</body>
+</html>

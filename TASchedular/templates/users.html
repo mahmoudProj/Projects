@@ -1,0 +1,130 @@
+{% load static %}
+{% if sessionUser.username == "" %}
+    <meta http-equiv="Refresh" content="0; url='/'"/>
+{% endif %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/users.css' %}"/>
+</head>
+
+<div class="navContainer">
+    <header class="header">
+        <h1><a>TA Scheduler Management System</a></h1>
+    </header>
+    <div class="navigation">
+        {% if sessionUser == "Admin" %}
+        {% endif %}
+        <li><a href="/home/">Home</a></li>
+        <li><a href="/courses/">Courses</a></li>
+        <li><a href="/users/">Users</a></li>
+        <li><a href="/">Logout</a></li>
+    </div>
+</div>
+
+<body>
+<div class="container">
+    <p class=header>Users</p>
+    <div class="containerbox">
+        <table>
+            <tr>
+                {% if sessionUser.role == "Admin" %}
+                    <th>Username</th>
+                    <th>Password</th>
+                {% endif %}
+                <th>Name</th>
+                <th>Email</th>
+                {% if sessionUser.role == "Admin" %}
+                    <th>Address</th>
+                {% endif %}
+                <th>Phone</th>
+                <th>Role</th>
+            </tr>
+            <tr>
+
+                {% for i in users %}
+                    {% if editingUser == i.username %}
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <td><input name="username" placeholder="{{ i.username }}"></td>
+                            <td><input name="password" placeholder="{{ i.password }}"></td>
+                            <td><input name="name" placeholder="{{ i.name }}"></td>
+                            <td><input name="email" placeholder="{{ i.email }}"></td>
+                            <td><input name="address" placeholder="{{ i.address }}"></td>
+                            <td><input name="phone" placeholder="{{ i.phone }}"></td>
+                            <td><select name="role" class="dropdownMenu">
+                                <option value="Admin" {% if i.role == 'Admin' %}selected{% endif %}>Admin</option>
+                                <option value="Instructor" {% if i.role == 'Instructor' %}selected{% endif %}>
+                                    Instructor
+                                </option>
+                                <option value="Teaching Assistant"
+                                        {% if i.role == 'Teaching Assistant' %}selected{% endif %}>Teaching Assistant
+                                </option>
+                            </select>
+                            </td>
+                            <td>
+                                <button name="saveEditUser" value="{{ i.username }}">Save</button>
+                        </form>
+                        <td>
+                            <a href="/users/">
+                                <button>Cancel</button>
+                            </a>
+                        </td>
+                        </td>
+                    {% else %}
+                        {% if sessionUser.role == "Admin" %}
+                            <td>{{ i.username }}</td>
+                            <td>{{ i.password }}</td>
+                        {% endif %}
+                        <td>{{ i.name }}</td>
+                        <td>{{ i.email }}</td>
+                        {% if sessionUser.role == "Admin" %}
+                            <td>{{ i.address }}</td>
+                        {% endif %}
+                        <td>{{ i.phone }}</td>
+                        <td>{{ i.role }}</td>
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <td>
+                                <button name="viewAssignments" value="{{ i.username }}">Assignments</button>
+                            </td>
+                        </form>
+                        {% if sessionUser.role == "Admin" %}
+                            <td>
+                                <form action="" method="post">
+                                    {% csrf_token %}
+                                    <button name="editUser" value="{{ i.username }}">Edit</button>
+                                </form>
+                            </td>
+                        {% endif %}
+                    {% endif %}
+                    {% if sessionUser.role == "Admin" %}
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <td>
+                                <button name="deleteUser" value="{{ i.username }}">Delete</button>
+                            </td>
+                        </form>
+                    {% endif %}
+                    </tr>
+                {% endfor %}
+        </table>
+    </div>
+    <div class="messageSuccess">
+        {{ success }}
+    </div>
+    <div class="messageError">
+        {{ error }}
+    </div>
+    {% if sessionUser.role == "Admin" %}
+        <div class="submit-button">
+            <a href="../createAccount/">
+                <button name="createAccountSubmit">Create Account</button>
+            </a>
+        </div>
+    {% endif %}
+</div>
+</body>
+</html>

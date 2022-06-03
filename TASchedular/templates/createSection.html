@@ -1,0 +1,103 @@
+{% load static %}
+{% if sessionUser.username == "" %}
+    <meta http-equiv="Refresh" content="0; url='/'"/>
+{% endif %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Courses</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/createSection.css' %}"/>
+</head>
+
+<div class="navContainer">
+    <header class="header">
+        <h1><a>TA Scheduler Management System</a></h1>
+    </header>
+    <div class="navigation">
+        {% if sessionUser == "Admin" %}
+        {% endif %}
+        <li><a href="/home/">Home</a></li>
+        <li><a href="/courses/">Courses</a></li>
+        <li><a href="/users/">Users</a></li>
+        <li><a href="/">Logout</a></li>
+    </div>
+</div>
+
+<body>
+<form action="" method="post">
+    {% csrf_token %}
+    <div class="container">
+        <p class="header">Add a new section for {{ course.name }}</p>
+        <div class="containerbox">
+            <table>
+                <tr>
+                    <select class="dropdownMenu" name="assignedUser">
+                        <option value="" disabled selected>Assign a User</option>
+                        {% for i in users %}
+                            <option value="{{ i.username }}">{{ i.username }}</option>
+                        {% endfor %}
+                    </select>
+                </tr>
+                <tr>
+                    <td><input name="sectionNumber" class="course-textbox" placeholder="Section Number" required></td>
+                    <td>
+                        <select class="dropdownMenuSection" name="sectionType" required>
+                            <option value="" disabled selected>Section Type</option>
+                            <option value=Lecture>Lecture</option>
+                            <option value=Lab>Lab</option>
+                            <option value=Discussion>Discussion</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Start Time<input type=time name="startTime" class="course-textbox" placeholder="Start Time">
+                    </td>
+                    <td>End Time<input type=time name="endTime" class="course-textbox" placeholder="End time">
+                </tr>
+
+                <tr>
+                    <fieldset>
+                        <legend>Choose Schedule:</legend>
+
+                        <div>
+                            <input type="checkbox" name="Monday" value="True">
+                            <label for="Monday">Monday</label>
+                        </div>
+
+                        <div>
+                            <input type="checkbox" name="Tuesday" value="True">
+                            <label for="Tuesday">Tuesday</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" name="Wednesday" value="True">
+                            <label for="Wednesday">Wednesday</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" name="Thursday" value="True">
+                            <label for="Thursday">Thursday</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" name="Friday" value="True">
+                            <label for="Friday">Friday</label>
+                        </div>
+                    </fieldset>
+
+
+                </tr>
+            </table>
+            <div class="messageSuccess">
+                {{ success }}
+            </div>
+            <div class="messageError">
+                {{ error }}
+            </div>
+        </div>
+        <div class="submit-button">
+            <button type="submit">Submit</button>
+        </div>
+    </div>
+
+</form>
+</body>
+</html>
